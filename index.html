@@ -11,14 +11,14 @@
 <meta property="og:site_name" content="bNewsX">
 <meta property="og:title" content="bNewsX · News you can trust, paid fairly">
 <meta property="og:description" content="Headlines you can discuss on chain, live in the bWalletX Feed. Pay-to-read with writers paid directly is next.">
-<meta property="og:image" content="https://bnewsx.com/og-bnewsx-v1.png">
+<meta property="og:image" content="https://bnewsx.com/og-bnewsx-v2.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="bNewsX: News you can trust, paid fairly. A story thread with on-chain discussion.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="bNewsX · News you can trust, paid fairly">
 <meta name="twitter:description" content="Headlines you can discuss on chain, live in the bWalletX Feed. Pay-to-read with writers paid directly is next.">
-<meta name="twitter:image" content="https://bnewsx.com/og-bnewsx-v1.png">
+<meta name="twitter:image" content="https://bnewsx.com/og-bnewsx-v2.png">
 <meta name="theme-color" content="#000000">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -158,6 +158,29 @@ footer{border-top:1px solid #121317;padding:40px 0 56px;color:var(--dim);font-si
 .unlock{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 18px;border-top:1px solid var(--edge);background:rgba(245,184,0,.05);font:600 15px/1.2 var(--hf)}
 .hero .story{max-width:460px;width:100%;justify-self:center}
 .unlock span:last-child{color:var(--gold-hi);white-space:nowrap}
+
+/* Hero animation: story card arrives → headline types in → signed line → read counter ticks → replies slide in → Pay to read chip pops. ~3 s, then only the caret blinks. */
+html,body{overflow-x:clip}
+.stage{position:relative;justify-self:center;width:100%;max-width:460px}
+.hero .stage .story{max-width:none}
+.stage .story{animation:n-arrive .9s var(--ease) both}
+.stage.wait,.stage.wait *{animation-play-state:paused!important}
+.stage .src{animation:n-up .4s var(--ease) .4s both}
+.caret{display:inline-block;width:2px;height:.95em;margin-left:3px;vertical-align:-.1em;background:var(--gold-hi);animation:n-blink 1.1s steps(1) infinite}
+.sig{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:-2px 0 12px;font-size:13.5px;color:var(--muted);animation:n-up .45s var(--ease) 1.6s both}
+.sig-l{display:inline-flex;align-items:center;gap:6px}.sig b{color:var(--ink);font-weight:600}
+.reads{font:600 13px/1 var(--hf);color:var(--gold-hi);font-variant-numeric:tabular-nums;white-space:nowrap}
+.stage .story-b p{animation:n-up .45s var(--ease) 1.75s both}
+.stage .cm{animation:n-slide .5s var(--ease) 2s both}
+.stage .cm+.cm{animation-delay:2.18s}
+.stage .unlock{animation:n-up .4s var(--ease) 2.4s both}
+.ptr{display:inline-block;padding:7px 12px;border-radius:999px;background:rgba(245,184,0,.14);animation:n-pop .45s cubic-bezier(.3,1.4,.5,1) 2.6s both}
+@keyframes n-arrive{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes n-up{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@keyframes n-slide{from{opacity:0;transform:translateX(-22px)}to{opacity:1;transform:none}}
+@keyframes n-pop{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:none}}
+@keyframes n-blink{0%,55%{opacity:1}56%,100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.stage *{animation:none!important}.caret{display:none}}
 </style>
 </head>
 <body>
@@ -184,16 +207,19 @@ footer{border-top:1px solid #121317;padding:40px 0 56px;color:var(--dim);font-si
     <p class="hint">Headlines are live today in the <span class="ink">Feed</span> in bWalletX.</p>
   </div>
 
-  <div class="story" role="img" aria-label="Example story thread: a headline from a named source, with replies posted on chain underneath.">
+  <div class="stage" role="img" aria-label="Example story in the Feed: a headline from a named source, signed by its writer, with a read count, replies on chain, and pay to read (coming).">
+  <div class="story">
     <div class="story-h"><span>bNews · Feed</span><span class="example">Example</span></div>
     <div class="story-b">
       <div class="src">Source · named and linked</div>
-      <h3>The headline, with where it came from</h3>
+      <h3><span class="type" data-text="The headline, with where it came from">The headline, with where it came from</span><i class="caret" aria-hidden="true"></i></h3>
+      <div class="sig"><span class="sig-l"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#ffd24d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4 6v6c0 4.5 3.4 8 8 9 4.6-1 8-4.5 8-9V6l-8-3Z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg>Signed by <b>$writer</b></span><span class="reads"><span class="count" data-to="1284">1,284</span> reads</span></div>
       <p>Open the story and talk about it underneath. Replies are posted on chain, so nobody can quietly edit them later.</p>
     </div>
     <div class="cm"><div class="av">A</div><div><b>$alice</b> · Here's the original filing, not the summary.</div></div>
     <div class="cm"><div class="av">S</div><div><b>$sam</b> · Tipped the author. Good catch.</div></div>
-    <div class="unlock"><span>Full story, pay to read</span><span class="example">Coming</span></div>
+    <div class="unlock"><span class="ptr">Pay to read · 1¢</span><span class="example">Coming</span></div>
+  </div>
   </div>
 </div>
 
@@ -270,5 +296,16 @@ footer{border-top:1px solid #121317;padding:40px 0 56px;color:var(--dim);font-si
     <span>By The Bitcoin Corporation Ltd.</span>
   </div>
 </footer>
+<script>
+(function(){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+var st=document.querySelector('.stage');if(!st)return;var cs=st.querySelectorAll('.count'),ty=st.querySelector('.type'),full=ty?ty.dataset.text:'';
+cs.forEach(function(el){el.textContent='0'});if(ty)ty.textContent='\u00a0';st.classList.add('wait');
+function go(){st.classList.remove('wait');
+if(ty){var i=0;setTimeout(function step(){i++;ty.textContent=full.slice(0,i);if(i<full.length)setTimeout(step,26)},550)}
+cs.forEach(function(el){var to=+el.dataset.to,d=1200,s=null;
+setTimeout(function(){requestAnimationFrame(function f(t){s=s||t;var k=Math.min(1,(t-s)/d);k=1-Math.pow(1-k,3);el.textContent=Math.round(to*k).toLocaleString('en-GB');if(k<1)requestAnimationFrame(f)})},1650)})}
+if(!('IntersectionObserver' in window))return go();
+var io=new IntersectionObserver(function(e){if(e[0].isIntersecting){io.disconnect();go()}},{threshold:.4});io.observe(st)})();
+</script>
 </body>
 </html>
